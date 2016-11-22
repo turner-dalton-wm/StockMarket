@@ -46,6 +46,10 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
+  '/stock/*': {
+    view: 'stock/index'
+  },
+
   'get /stock/:id': 'StockController.getStock'
 
 };

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Stock</title>
+</head>
+<body>
+<h3>Stock</h3>
+<script type="text/javascript" src="/js/dependencies/sails.io.js"></script>
+<script type="text/javascript">
+    io.socket.get('/stock/55');
+    io.socket.on('hello', function (data) {
+        console.log('Socket `' + data.id + '` joined the party!');
+    });
+</script>
+</body>
+</html>
