@@ -8,7 +8,7 @@
 <h3>Hello World</h3>
 <script type="text/javascript" src="/js/dependencies/sails.io.js"></script>
 <script type="text/javascript">
-    io.socket.get('/stock/1', function (data, jwr) {
+    io.socket.get('/stock/55', function (data, jwr) {
         console.log('Server responded with status code ' + jwr.statusCode + ' and data: ', data);
     });
     io.socket.on('hello', function (data) {
