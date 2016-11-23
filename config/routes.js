@@ -32,9 +32,9 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
-  /*'/': {
-    view: 'index'
-  },*/
+  '/': {
+    view: 'public/index'
+  },
 
   /***************************************************************************
   *                                                                          *
@@ -46,10 +46,8 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
-  '/stock/*': {
-    view: 'stock/index'
-  },
+  'get /stock/:name': 'StockController.view',
 
-  'get /stock/:id': 'StockController.getStock'
+  'get /stock_connect/': 'StockController.connect'
 
 };

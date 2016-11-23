@@ -6,12 +6,13 @@
  */
 
 module.exports = {
-	getStock: function(req, res) {
-        var id = req.param('id');
-        if(!id) return res.badRequest('No ID');
-        if (!req.isSocket) return res.badRequest('No Socket');
-        sails.sockets.join(req, 'stock');
-        sails.sockets.blast('hello', {id: id});
-    }
+        view: function(req, res) {
+                res.view('public/stock/index');
+        },
+        connect: function(req, res) {
+                if (!req.isSocket) return res.badRequest('No Socket');
+                sails.sockets.join(req, 'stock');
+                sails.sockets.blast('response', {id: 100});
+        }
 };
 

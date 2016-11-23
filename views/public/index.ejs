@@ -2,14 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Stock</title>
+    <title>Home Page</title>
 </head>
 <body>
-<h3>Stock</h3>
+<h3>Hello World</h3>
 <script type="text/javascript" src="/js/dependencies/sails.io.js"></script>
 <script type="text/javascript">
-    io.socket.get('/stock/55');
-    io.socket.on('hello', function (data) {
+    io.socket.get('/stock/55', function (data, jwr) {
+        console.log('Server responded with status code ' + jwr.statusCode + ' and data: ', data);
+    });
+    io.socket.on('response', function (data) {
         console.log('Socket `' + data.id + '` joined the party!');
     });
 </script>
