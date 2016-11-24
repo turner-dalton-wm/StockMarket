@@ -46,8 +46,12 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
-  'get /stock/:name': 'StockController.view',
+  'get /stocks/': 'StockController.viewAll',
+  'get /stocks/:name': 'StockController.view',
+  'get /stock_connect/:name': 'StockController.connect',
 
-  'get /stock_connect/': 'StockController.connect'
+  'get /users/': 'UserController.viewAll',
+  'get /users/:name': 'UserController.view',
+  'get /user_connect/:name': 'UserController.connect'
 
 };

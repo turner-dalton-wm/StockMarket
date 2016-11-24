@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Stock</title>
+</head>
+<body>
+<h3>Stock</h3>
+<script type="text/javascript" src="../js/dependencies/sails.io.js"></script>
+<script type="text/javascript">
+    var stockName = location.href.substring(location.href.lastIndexOf('/') + 1);
+    io.socket.get('/user_connect/' + stockName, function (data, jwr) {
+        console.log('Server responded with status code ' + jwr.statusCode + ' and data: ', data);
+    });
+    io.socket.on('response', function (data) {
+        console.log('NOW VIEWING ' + data.name + ' USER');
+    });
+</script>
+</body>
+</html>

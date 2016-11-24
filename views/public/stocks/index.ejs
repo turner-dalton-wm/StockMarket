@@ -8,11 +8,13 @@
 <h3>Stock</h3>
 <script type="text/javascript" src="../js/dependencies/sails.io.js"></script>
 <script type="text/javascript">
-    io.socket.get('/stock_connect/', function (data, jwr) {
+    var stockName = location.href.substring(location.href.lastIndexOf('/') + 1);
+    console.log(stockName);
+    io.socket.get('/stock_connect/' + stockName, function (data, jwr) {
         console.log('Server responded with status code ' + jwr.statusCode + ' and data: ', data);
     });
     io.socket.on('response', function (data) {
-        console.log('Socket `' + data.id + '` joined the party!');
+        console.log('NOW VIEWING ' + data.name + ' STOCK');
     });
 </script>
 </body>
