@@ -3,19 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <title>Stock</title>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="../../js/dependencies/sails.io.js"></script>
+    <style>
+        body {
+
+        }
+        div.chart {
+            display: inline-block;
+        }
+    </style>
 </head>
 <body>
 <h3>Stock</h3>
+<div id="chart" class="chart"></div>
 <script type="text/javascript" src="../js/dependencies/sails.io.js"></script>
 <script type="text/javascript">
-    var stockName = location.href.substring(location.href.lastIndexOf('/') + 1);
-    console.log(stockName);
-    io.socket.get('/stock_connect/' + stockName, function (data, jwr) {
-        console.log('Server responded with status code ' + jwr.statusCode + ' and data: ', data);
-    });
-    io.socket.on('response', function (data) {
-        console.log('NOW VIEWING ' + data.name + ' STOCK');
-    });
+    google.charts.load('current', {packages: ['corechart', 'line']});
+    google.charts.setOnLoadCallback(init);
+
+    function updateGraph(stock) {
+        var data = new google.visualization.DataTable();
+
+        data.addColumn('number', 'Sales Ago');
+        data.addColumn('number', 'Price');
+
+        var rows = [];
+        for (var j = 0; j < stock.history.length; j++) {
+            rows.push([stock.history.length - j, stock.history[j]]);
+        }
+
+        data.addRows(rows);
+
+        var options = {
+            title: stock.name.toUpperCase(),
+            width: 500,
+            hAxis: {
+                title: 'Sales Ago',
+                direction: -1
+            },
+            vAxis: {
+                title: 'Price',
+                minValue: 0
+            }
+        };
+
+        var div = document.getElementById('chart');
+        var chart = new google.visualization.LineChart(div);
+        chart.draw(data, options);
+    }
+
+    function init() {
+        var stockName = location.href.substring(location.href.lastIndexOf('/') + 1);
+        console.log(stockName);
+        io.socket.get('/stock_connect/' + stockName, function (data, jwr) {
+            console.log('Server responded with status code ' + jwr.statusCode + ' and data: ', data);
+        });
+        io.socket.on('response', function (data) {
+            //console.log(data);
+            console.log('NOW VIEWING ' + data[0].name + ' STOCK');
+            updateGraph(data[0]);
+        });
+    }
 </script>
 </body>
 </html>

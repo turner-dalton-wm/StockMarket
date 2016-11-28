@@ -11,6 +11,18 @@ module.exports = {
     name: {
       type: 'string',
       required: true
+    },
+    price: {
+      type: 'integer',
+      required: true
+    },
+    lastDate: {
+      type: 'string',
+      required: true
+    },
+    history: {
+      type: 'array',
+      required: true
     }
   }
 };

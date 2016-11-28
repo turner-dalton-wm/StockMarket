@@ -3,19 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <title>Stocks</title>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="../../js/dependencies/sails.io.js"></script>
+    <style>
+        body {
+
+        }
+        div.chart {
+            display: inline-block;
+        }
+    </style>
 </head>
 <body>
-<h3>Stocks</h3>
-<script type="text/javascript" src="../../js/dependencies/sails.io.js"></script>
+<h3>All Stocks</h3>
+<div id="pepe" class="chart"></div>
+<div id="bidn" class="chart"></div>
+<div id="lslt" class="chart"></div>
+<div id="guac" class="chart"></div>
 <script type="text/javascript">
-    var stockName = location.href.substring(location.href.lastIndexOf('/') + 1);
-    console.log(stockName);
-    io.socket.get('/stock_all_connect/' + stockName, function (data, jwr) {
-        console.log('Server responded with status code ' + jwr.statusCode + ' and data: ', data);
-    });
-    io.socket.on('response', function (data) {
-        console.log('NOW VIEWING ALL STOCKS');
-    });
+    google.charts.load('current', {packages: ['corechart', 'line']});
+    google.charts.setOnLoadCallback(init);
+
+    function updateGraph(stock) {
+        var data = new google.visualization.DataTable();
+
+        data.addColumn('number', 'Sales Ago');
+        data.addColumn('number', 'Price');
+
+        var rows = [];
+        for (var j = 0; j < stock.history.length; j++) {
+            rows.push([stock.history.length - j, stock.history[j]]);
+        }
+
+        data.addRows(rows);
+
+        var options = {
+            title: stock.name.toUpperCase(),
+            width: 500,
+            hAxis: {
+                title: 'Sales Ago',
+                direction: -1
+            },
+            vAxis: {
+                title: 'Price',
+                minValue: 0
+            }
+        };
+
+        var div = document.getElementById(stock.name);
+        var chart = new google.visualization.LineChart(div);
+        chart.draw(data, options);
+    }
+
+    function init() {
+        io.socket.get('/stocks_connect/', function (data, jwr) {
+            console.log('Server responded with status code ' + jwr.statusCode + ' and data: ', data);
+        });
+        io.socket.on('response', function (data) {
+            console.log('NOW VIEWING ALL STOCKS');
+            for(var i = 0; i < data.length; i++) {
+                var div = document.createElement('div');
+                div.className = 'chart';
+                document.body.appendChild(div);
+                updateGraph(data[i]);
+            }
+        });
+    }
 </script>
 </body>
 </html>
