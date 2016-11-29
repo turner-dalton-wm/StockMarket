@@ -59,7 +59,7 @@
         io.socket.get('/stock_connect/' + stockName, function (data, jwr) {
             console.log('Server responded with status code ' + jwr.statusCode + ' and data: ', data);
         });
-        io.socket.on('response', function (data) {
+        io.socket.on('stock_' + stockName + '_response', function (data) {
             //console.log(data);
             console.log('NOW VIEWING ' + data[0].name + ' STOCK');
             updateGraph(data[0]);

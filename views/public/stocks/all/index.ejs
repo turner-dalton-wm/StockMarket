@@ -16,10 +16,6 @@
 </head>
 <body>
 <h3>All Stocks</h3>
-<div id="pepe" class="chart"></div>
-<div id="bidn" class="chart"></div>
-<div id="lslt" class="chart"></div>
-<div id="guac" class="chart"></div>
 <script type="text/javascript">
     google.charts.load('current', {packages: ['corechart', 'line']});
     google.charts.setOnLoadCallback(init);
@@ -59,13 +55,24 @@
         io.socket.get('/stocks_connect/', function (data, jwr) {
             console.log('Server responded with status code ' + jwr.statusCode + ' and data: ', data);
         });
-        io.socket.on('response', function (data) {
+        io.socket.on('stocks_response', function (data) {
             console.log('NOW VIEWING ALL STOCKS');
             for(var i = 0; i < data.length; i++) {
+
+                var oldDiv = document.getElementById(data[i].name);
+                if(oldDiv) oldDiv.parentNode.removeChild(oldDiv);
+
+                var a = document.createElement('a');
+                a.href = data[i].name;
+                document.body.appendChild(a);
+
                 var div = document.createElement('div');
                 div.className = 'chart';
-                document.body.appendChild(div);
+                div.id = data[i].name;
+                a.appendChild(div);
+
                 updateGraph(data[i]);
+
             }
         });
     }
